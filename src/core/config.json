@@ -1,0 +1,10 @@
+{
+    "websites": {
+        "malts": {
+            "production": "https://www.deptagency.com/",
+            "staging": "",
+            "development": ""
+        }
+    },
+    "defaultAgreementParameter": ""
+}

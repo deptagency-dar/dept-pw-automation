@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "target": "es5", // or a higher version like es6, es2017, etc.
+    "module": "commonjs", // or another module system you are using
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "strict": true, // enables a wide range of type checking behavior
+    "outDir": "./dist", // output directory for compiled files
+    "baseUrl": "./", // base directory to resolve non-relative module names
+    "paths": {
+      "*": [
+        "node_modules/*",
+        "src/types/*"
+      ]
+    }, // path mapping
+    // other options...
+  },
+  "include": [
+    "src/**/*" // adjust this to include all folders you want to be compiled
+  ],
+  "exclude": [
+    "node_modules", // standard practice to exclude node_modules
+    // other folders or files to exclude
+  ]
+}
