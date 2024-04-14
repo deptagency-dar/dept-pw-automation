@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "cucumber-js -t @prod",
+    "test": "BROWSER_TYPE=chromium cucumber-js -t @prod",
+    "test:firefox": "BROWSER_TYPE=firefox cucumber-js -t @prod",
+    "test:webkit": "BROWSER_TYPE=webkit cucumber-js -t @prod",
     "debug": "cucumber-js -t @debug",
     "posttest": "npx ts-node src/core/report.ts"
   },
