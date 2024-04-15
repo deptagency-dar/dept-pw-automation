@@ -4,6 +4,7 @@ Playwright automation framework
 # Install:
 
 > npm install
+
 > npx playwright install
 
 > npm run test          
