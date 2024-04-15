@@ -45,13 +45,13 @@ AfterStep(async function({pickle, result}) {
 });
 
 After({timeout:5000},async (scenario) => {
-    if(scenario.result?.status == Status.FAILED){
-        const img = await pageFixture.page.screenshot({path: `./test-results/screenshots/${scenario.pickle.name}`, type:"png"});
-        await worldContext.attach(img, "image/png");
+    // Close the page and browser if they are open
+    if (pageFixture.page && !pageFixture.page.isClosed()) {
+        await pageFixture.page.close();
     }
-    //await saveV8Coverage(pageFixture.page);
-    await pageFixture.page.close();
-    await browser.close();
+    if (browser && browser.isConnected()) {
+        await browser.close();
+    }
 });
 
 AfterAll(async () => {
