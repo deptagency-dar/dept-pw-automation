@@ -3,6 +3,7 @@ import assert from "assert";
 import { pageFixture } from "../../core/pageFixture";
 import rawConfig from '../../core/config.json';
 import { AppConfig } from '../../core/config.types';
+import { deptLocators } from '../locators/deptLocators';
 
 const environment = process.env.ENV || 'production'; // Default to production if ENV is not set
 const defaultParams = rawConfig.defaultAgreementParameter;
@@ -55,6 +56,6 @@ When('I navigate to the {string}',{timeout:10000}, async function (relativePath:
 });
 
 Then('I can see that the element {string} is displayed', {timeout:10000}, async function (element:string) {
-    await pageFixture.page.locator(element).isVisible();
+    await pageFixture.page.locator(await deptLocators.getElementLocator(element)).isVisible();
 });
 
