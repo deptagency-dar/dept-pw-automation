@@ -13,17 +13,23 @@ Before(async function(scenario) {
         
         // Determine which browser to use
         const browserType = process.env.BROWSER_TYPE || 'chromium'; // Default to chromium if no env variable is set
+        const isHeadless = process.env.HEADLESS === 'true'; // Check the HEADLESS environment variable
+
+        let launchOptions = {
+            headless: isHeadless,
+            args: ['--start-maximized'] // Maximized window is only relevant in non-headless mode
+        };
 
         let browser;
         switch (browserType.toLowerCase()) {
             case 'firefox':
-                browser = await firefox.launch({ headless: false, args: ['--start-maximized'] });
+                browser = await firefox.launch(launchOptions);
                 break;
             case 'webkit':
-                browser = await webkit.launch({ headless: false, args: ['--start-maximized'] });
+                browser = await webkit.launch(launchOptions);
                 break;
             default:
-                browser = await chromium.launch({ headless: false, args: ['--start-maximized'] });
+                browser = await chromium.launch(launchOptions);
                 break;
         }
 
