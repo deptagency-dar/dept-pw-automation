@@ -1,34 +1,40 @@
 import { After, AfterAll, AfterStep, Before, Status } from "@cucumber/cucumber";
-import { Browser, chromium, firefox, webkit } from "@playwright/test";
+import { Browser, BrowserContext, chromium, firefox, webkit } from "@playwright/test";
 import { finalizeCoverage, saveV8Coverage } from "./coverageHelper";
 import { pageFixture } from "./pageFixture";
 
 let browser : Browser;
-let worldContext: any;
+let context: BrowserContext;
+let page;
 
 Before(async function(scenario) {
     try {
         console.log(`Starting scenario: ${scenario.pickle.name}`);
-        worldContext = this;
         
         // Determine which browser to use
         const browserType = process.env.BROWSER_TYPE || 'chromium'; // Default to chromium if no env variable is set
+        const isHeadless = process.env.HEADLESS === 'true'; // Check the HEADLESS environment variable
+
+        let launchOptions = {
+            headless: isHeadless,
+            args: ['--start-maximized'] // Maximized window is only relevant in non-headless mode
+        };
 
         let browser;
         switch (browserType.toLowerCase()) {
             case 'firefox':
-                browser = await firefox.launch({ headless: false, args: ['--start-maximized'] });
+                browser = await firefox.launch(launchOptions);
                 break;
             case 'webkit':
-                browser = await webkit.launch({ headless: false, args: ['--start-maximized'] });
+                browser = await webkit.launch(launchOptions);
                 break;
             default:
-                browser = await chromium.launch({ headless: false, args: ['--start-maximized'] });
+                browser = await chromium.launch(launchOptions);
                 break;
         }
 
-        const context = await browser.newContext();
-        const page = await context.newPage();
+        context = await browser.newContext();
+        page = await context.newPage();
         pageFixture.page = page;
         //await pageFixture.page.coverage.startJSCoverage();
     } catch (error) {
@@ -44,16 +50,25 @@ AfterStep(async function({pickle, result}) {
     }
 });
 
-After({timeout:5000},async (scenario) => {
-    // Close the page and browser if they are open
-    if (pageFixture.page && !pageFixture.page.isClosed()) {
-        await pageFixture.page.close();
-    }
-    if (browser && browser.isConnected()) {
-        await browser.close();
+After(async function () {
+    try {
+        if (pageFixture.page && !pageFixture.page.isClosed()) {
+            console.log('Closing page...');
+            await pageFixture.page.close();
+        }
+        if (context) {
+            console.log('Closing context...');
+            await context.close();
+        }
+    } finally {
+        if (browser && browser.isConnected()) {
+            console.log('Closing browser...');
+            await browser.close();
+        }
     }
 });
 
 AfterAll(async () => {
+    process.exit(0);
     //await finalizeCoverage();
 });
