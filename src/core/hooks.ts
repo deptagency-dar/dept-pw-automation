@@ -1,5 +1,5 @@
 import { After, AfterAll, AfterStep, Before, Status } from "@cucumber/cucumber";
-import { Browser, BrowserContext, Page, chromium, firefox, webkit } from "@playwright/test";
+import { Browser, chromium, firefox, webkit } from "@playwright/test";
 import { finalizeCoverage, saveV8Coverage } from "./coverageHelper";
 import { pageFixture } from "./pageFixture";
 
@@ -13,24 +13,26 @@ Before(async function(scenario) {
         worldContext = this;
 
         // Determine which browser to use
-        const browserType = process.env.BROWSER_TYPE || 'chromium'; // Default to chromium if no env variable is set
+        const browserType = process.env.BROWSER_TYPE; // Default to chromium if no env variable is set
         const isHeadless = process.env.HEADLESS === 'true'; // Check the HEADLESS environment variable
 
         let launchOptions = {
             headless: isHeadless,
-            args: ['--start-maximized'] // Maximized window is only relevant in non-headless mode
+            //args: ['--start-maximized'] // Maximized window is only relevant in non-headless mode
         };
 
-        switch (browserType.toLowerCase()) {
-            case 'firefox':
-                browser = await firefox.launch(launchOptions);
-                break;
-            case 'webkit':
-                browser = await webkit.launch(launchOptions);
-                break;
-            default:
-                browser = await chromium.launch(launchOptions);
-                break;
+        if(browserType){
+            switch (browserType.toLowerCase()) {
+                case 'firefox':
+                    browser = await firefox.launch(launchOptions);
+                    break;
+                case 'webkit':
+                    browser = await webkit.launch(launchOptions);
+                    break;
+                default:
+                    browser = await chromium.launch(launchOptions);
+                    break;
+            }
         }
         
         const context = await browser.newContext();
