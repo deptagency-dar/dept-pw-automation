@@ -9,25 +9,22 @@ let worldContext: any;
 Before(async function(scenario) {
     try {
         // Determine which browser to us
-        console.log(`Starting scenario: ${scenario.pickle.name}`);
+        await console.log(`Starting scenario: ${scenario.pickle.name}`);
         worldContext = this;
 
         // Determine which browser to use
-        const browserType = process.env.BROWSER_TYPE; // Default to chromium if no env variable is set
-        const isHeadless = process.env.HEADLESS === 'true'; // Check the HEADLESS environment variable
+        let browserType = process.env.BROWSER_TYPE; // Default to chromium if no env variable is set
+        let isHeadless = process.env.HEADLESS === 'true'; // Check the HEADLESS environment variable
 
         let launchOptions = {
             headless: isHeadless,
-            //args: ['--start-maximized'] // Maximized window is only relevant in non-headless mode
+            args: ['--start-maximized'] // Maximized window is only relevant in non-headless mode
         };
 
         if(browserType){
             switch (browserType.toLowerCase()) {
                 case 'firefox':
                     browser = await firefox.launch(launchOptions);
-                    break;
-                case 'webkit':
-                    browser = await webkit.launch(launchOptions);
                     break;
                 default:
                     browser = await chromium.launch(launchOptions);
@@ -38,7 +35,7 @@ Before(async function(scenario) {
         const context = await browser.newContext();
         const page = await context.newPage();
         pageFixture.page = page;
-        await pageFixture.page.coverage.startJSCoverage();
+        //await pageFixture.page.coverage.startJSCoverage();
     } catch (error) {
         console.log(error);
     }
@@ -53,12 +50,12 @@ AfterStep(async function({pickle, result}) {
 });
 
 After(async function () {
-    await saveV8Coverage(pageFixture.page);
+    //await saveV8Coverage(pageFixture.page);
     await pageFixture.page.close();
     await browser.close();
 });
 
 
 AfterAll(async () => {
-    await finalizeCoverage();
+    //await finalizeCoverage();
 });

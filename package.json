@@ -6,7 +6,6 @@
   "scripts": {
     "test:chromium": "BROWSER_TYPE=chromium cucumber-js -t @prod",
     "test:firefox": "BROWSER_TYPE=firefox cucumber-js -t @prod",
-    "test:webkit": "BROWSER_TYPE=webkit cucumber-js -t @prod",
     "debug": "cucumber-js -t @debug",
     "posttest": "npx ts-node src/core/report.ts"
   },
@@ -31,6 +30,7 @@
     "axios": "^1.5.1",
     "cheerio": "^1.0.0-rc.12",
     "istanbul-reports": "^3.1.6",
+    "playwright": "^1.43.1",
     "puppeteer": "^21.3.8",
     "v8-to-istanbul": "^9.1.3"
   }

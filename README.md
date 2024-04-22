@@ -8,5 +8,4 @@ Playwright automation framework
 > npx playwright install
 
 > npm run test          
-> npm run test:firefox  
-> npm run test:webkit  
+> npm run test:firefox
