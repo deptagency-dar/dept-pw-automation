@@ -9,27 +9,11 @@ const environment = process.env.ENV || 'production'; // Default to production if
 const defaultParams = rawConfig.defaultAgreementParameter;
 const config: AppConfig = rawConfig as AppConfig;
 
-
-Given('I navigate to the {string} website with locale {string}', {timeout:20000}, async function (website: string, locale: string) {
-    const websiteConfig = config.websites[website];
-
-    if (!websiteConfig) {
-        throw new Error('Website configuration not found.');
-    }
-
-    const baseUrl = websiteConfig[environment];
-    if (!baseUrl) {
-        throw new Error('Environment URL not found.');
-    }
-    const fullUrl = `${baseUrl}/${locale}/${defaultParams}`;
-    await pageFixture.page.goto(fullUrl);
-});
-
 Given('I navigate to {string}', {timeout:20000}, async function (website: string) {
     await pageFixture.page.goto(website);
 });
 
-Then('I am redirected to {string}',{timeout:10000}, async function (expected: string) {
+Then('I am redirected to {string}',{}, async function (expected: string) {
     await pageFixture.page.waitForFunction(
         `window.location.href === "${expected.replace(/"/g, '\\"')}"`,
         { timeout: 4000 } // Timeout after 10000 ms, for example
@@ -37,7 +21,7 @@ Then('I am redirected to {string}',{timeout:10000}, async function (expected: st
     assert.strictEqual(await pageFixture.page.url(), expected);
 });
 
-When('I navigate to the {string}',{timeout:10000}, async function (relativePath: string) {
+When('I navigate to relative path {string}',{}, async function (relativePath: string) {
     const currentUrl = new URL(await pageFixture.page.url());
 
     // Ensure the correct number of slashes between segments
@@ -55,7 +39,56 @@ When('I navigate to the {string}',{timeout:10000}, async function (relativePath:
     await pageFixture.page.goto(newUrl);
 });
 
-Then('I can see that the element {string} is displayed', {timeout:10000}, async function (element:string) {
+Then('I can see that the element {string} is displayed', {}, async function (element:string) {
     await pageFixture.page.locator(await deptLocators.getElementLocator(element)).isVisible();
 });
+
+When('I click the element that has the value {string} by {string}',{}, async function (value: string, type: string) {
+    switch (type){
+        case 'label':
+            await pageFixture.page.getByLabel(value).click();
+            break;
+        case 'placeholder':
+            pageFixture.page.getByPlaceholder(value).click();
+            break;
+        case 'text':
+            await pageFixture.page.getByText(value).click();
+            break;
+        case 'title':
+            await pageFixture.page.getByTitle(value).click();
+            break;
+        case 'altText':
+            await pageFixture.page.getByAltText(value).click();
+            break;
+    }
+});
+
+When('I click element {string} by role {string}',{}, async function (element: any, role: string) {
+    await pageFixture.page.getByRole(element, { name: role }).click();
+});
+
+When('I select the element {string}', {}, async function (element: string) {
+    let locator = await deptLocators.getElementLocator(element);
+    await pageFixture.page.locator(locator).click();
+});
+
+When('I type the value {string} in the element {string}', {}, async function (value: string, element: string) {
+    let locator = await deptLocators.getElementLocator(element);
+    await pageFixture.page.locator(locator).fill(value);
+});
+
+When('I type {string}',{}, async function(text: string) {
+    await pageFixture.page.keyboard.type(text);
+})
+
+When('I check the element {string}',{}, async function(element: string) {
+    let locator = await deptLocators.getElementLocator(element);
+    // Select the checkbox by its name attribute
+    const checkbox = await pageFixture.page.$(locator);
+    if(checkbox){
+        await checkbox.check();
+    } else {
+        throw 'Checkbox not found';
+    }
+})
 
