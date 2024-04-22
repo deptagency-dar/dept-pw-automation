@@ -7,7 +7,7 @@
     "test:chromium": "BROWSER_TYPE=chromium cucumber-js -t @prod --format html:test-results/chromium-report.html --format json:test-results/chromium-report.json",
     "test:firefox": "BROWSER_TYPE=firefox cucumber-js -t @prod --format html:test-results/firefox-report.html --format json:test-results/firefox-report.json",
     "debug": "cucumber-js -t @debug",
-    "posttest": "npx ts-node src/core/report.ts"
+    "posttest": "npx ts-node ./src/core/report.ts"
   },
   "keywords": [],
   "author": "",
