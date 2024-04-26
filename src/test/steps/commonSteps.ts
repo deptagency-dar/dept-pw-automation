@@ -43,6 +43,10 @@ Then('I can see that the element {string} is displayed', {}, async function (ele
     await pageFixture.page.locator(await deptLocators.getElementLocator(element)).isVisible();
 });
 
+When('I fill the element {string} with the text {string}', {}, async function (element:string, text:string) {
+    await pageFixture.page.locator(await deptLocators.getElementLocator(element)).fill(text);
+});
+
 When('I click the element that has the value {string} by {string}',{}, async function (value: string, type: string) {
     switch (type){
         case 'label':
@@ -63,6 +67,26 @@ When('I click the element that has the value {string} by {string}',{}, async fun
     }
 });
 
+Then('I see that the element with value {string} by {string} is visible',{}, async function (value: string, type: string) {
+    switch (type){
+        case 'label':
+            await pageFixture.page.getByLabel(value).isVisible();
+            break;
+        case 'placeholder':
+            pageFixture.page.getByPlaceholder(value).isVisible();
+            break;
+        case 'text':
+            await pageFixture.page.getByText(value).isVisible();
+            break;
+        case 'title':
+            await pageFixture.page.getByTitle(value).isVisible();
+            break;
+        case 'altText':
+            await pageFixture.page.getByAltText(value).isVisible();
+            break;
+    }
+});
+
 When('I click element {string} by role {string}',{}, async function (element: any, role: string) {
     await pageFixture.page.getByRole(element, { name: role }).click();
 });
@@ -70,11 +94,6 @@ When('I click element {string} by role {string}',{}, async function (element: an
 When('I select the element {string}', {}, async function (element: string) {
     let locator = await deptLocators.getElementLocator(element);
     await pageFixture.page.locator(locator).click();
-});
-
-When('I type the value {string} in the element {string}', {}, async function (value: string, element: string) {
-    let locator = await deptLocators.getElementLocator(element);
-    await pageFixture.page.locator(locator).fill(value);
 });
 
 When('I type {string}',{}, async function(text: string) {
