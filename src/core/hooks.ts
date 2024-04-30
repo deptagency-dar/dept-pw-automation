@@ -1,10 +1,12 @@
 import { After, AfterAll, AfterStep, Before, Status } from "@cucumber/cucumber";
-import { Browser, chromium, firefox, webkit } from "@playwright/test";
+import { Browser, chromium, firefox, webkit, devices, BrowserContext } from "@playwright/test";
 import { finalizeCoverage, saveV8Coverage } from "./coverageHelper";
 import { pageFixture } from "./pageFixture";
+import { exec } from "child_process";
 
 let browser : Browser;
 let worldContext: any;
+let browserContext: BrowserContext | undefined;
 
 Before(async function(scenario) {
     try {
@@ -26,6 +28,26 @@ Before(async function(scenario) {
                 case 'firefox':
                     browser = await firefox.launch(launchOptions);
                     break;
+                case 'edge':
+                    browser = await chromium.launch({...launchOptions, channel: 'msedge'});
+                    break;
+                case 'mobilechrome':
+                    const Pixel2 = devices['Pixel 2'];
+                    browser = await chromium.launch(launchOptions);
+                    browserContext = await browser.newContext({
+                        ...Pixel2,
+                    });
+                    break;
+                case 'mobilesafari':
+                    const iPhone11 = devices['iPhone 11'];
+                    browser = await webkit.launch({
+                        ...launchOptions,
+                        ...iPhone11,
+                    });
+                    console.log(iPhone11);
+                case 'webkit':
+                    browser = await webkit.launch(launchOptions);
+                    break;
                 default:
                     browser = await chromium.launch(launchOptions);
                     break;
@@ -35,6 +57,7 @@ Before(async function(scenario) {
         const context = await browser.newContext();
         const page = await context.newPage();
         pageFixture.page = page;
+
         //await pageFixture.page.coverage.startJSCoverage();
     } catch (error) {
         console.log(error);
@@ -52,10 +75,13 @@ AfterStep(async function({pickle, result}) {
 After(async function () {
     //await saveV8Coverage(pageFixture.page);
     await pageFixture.page.close();
+    await browserContext?.close();
     await browser.close();
 });
 
 
 AfterAll(async () => {
-    //await finalizeCoverage();
+    await finalizeCoverage();
+    // Cerrar el proceso de Playwright
+    exec("pkill -f playwright");
 });
