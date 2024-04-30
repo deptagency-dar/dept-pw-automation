@@ -7,5 +7,7 @@ Playwright automation framework
 
 > npx playwright install
 
-> npm run test          
+# Run scripts:
+
+> npm run test:chromium          
 > npm run test:firefox
