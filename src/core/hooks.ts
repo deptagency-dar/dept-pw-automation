@@ -1,12 +1,13 @@
 import { After, AfterAll, AfterStep, Before, Status } from "@cucumber/cucumber";
-import { Browser, chromium, firefox, webkit, devices, BrowserContext } from "@playwright/test";
+import { Browser, chromium, firefox, webkit, devices } from "@playwright/test";
 import { finalizeCoverage, saveV8Coverage } from "./coverageHelper";
 import { pageFixture } from "./pageFixture";
 import { exec } from "child_process";
+import { channel } from "diagnostics_channel";
 
 let browser : Browser;
 let worldContext: any;
-let browserContext: BrowserContext | undefined;
+
 
 Before(async function(scenario) {
     try {
@@ -28,14 +29,25 @@ Before(async function(scenario) {
                 case 'firefox':
                     browser = await firefox.launch(launchOptions);
                     break;
+                case 'chrome':
+                    const chromeDesktop = devices['Desktop Chrome'];
+                    console.log(`Launching Chrome with options:`, launchOptions, chromeDesktop); // Log launch options and device configuration
+                    browser = await chromium.launch({
+                        ...launchOptions,
+                        ...chromeDesktop
+                    });
+                    console.log(browser);
+                    break;
                 case 'edge':
-                    browser = await chromium.launch({...launchOptions, channel: 'msedge'});
+                    browser = await chromium.launch({
+                        channel: 'msedge',
+                    });
                     break;
                 case 'mobilechrome':
                     const Pixel2 = devices['Pixel 2'];
-                    browser = await chromium.launch(launchOptions);
-                    browserContext = await browser.newContext({
-                        ...Pixel2,
+                    browser = await webkit.launch({
+                        ...launchOptions,
+                        ...Pixel2
                     });
                     break;
                 case 'mobilesafari':
@@ -44,7 +56,7 @@ Before(async function(scenario) {
                         ...launchOptions,
                         ...iPhone11,
                     });
-                    console.log(iPhone11);
+                    break;
                 case 'webkit':
                     browser = await webkit.launch(launchOptions);
                     break;
@@ -52,15 +64,17 @@ Before(async function(scenario) {
                     browser = await chromium.launch(launchOptions);
                     break;
             }
+        } else {
+            browser = await chromium.launch(launchOptions); // Si no se especifica el tipo de navegador, se lanza Chromium por defecto
         }
         
         const context = await browser.newContext();
-        const page = await context.newPage();
-        pageFixture.page = page;
+        pageFixture.page = await context.newPage();
 
         //await pageFixture.page.coverage.startJSCoverage();
     } catch (error) {
-        console.log(error);
+        console.error("Error initializing browser: " + error);
+        throw error;
     }
 });
 
@@ -74,14 +88,36 @@ AfterStep(async function({pickle, result}) {
 
 After(async function () {
     //await saveV8Coverage(pageFixture.page);
-    await pageFixture.page.close();
-    await browserContext?.close();
-    await browser.close();
+    try {
+        // Check if browser exists before attempting to close it
+        if (browser) {
+            await browser.close();
+        } else {
+            console.log("Browser is not open or already closed.");
+        }
+    } catch (error) {
+        console.error("Error closing browser: " + error);
+        throw error; // Rethrow the error to fail the test if closing fails
+    }
+
+    try {
+        // Check if page and browserContext exist before attempting to close them
+        if (pageFixture.page && !pageFixture.page.isClosed()) {
+            await pageFixture.page.close();
+        }
+    } catch (error) {
+        console.error("Error closing page and browser context: " + error);
+        throw error; // Rethrow the error to fail the test if closing fails
+    }
 });
 
 
 AfterAll(async () => {
-    await finalizeCoverage();
-    // Cerrar el proceso de Playwright
-    exec("pkill -f playwright");
+    try {
+        await finalizeCoverage();
+        exec("pkill -f playwright");
+    } catch (error) {
+        console.error("Error during test teardown: " + error);
+        throw error; // Relaunch the error to fail the test if closing fails
+    }
 });

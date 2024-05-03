@@ -5,7 +5,7 @@ Playwright automation framework
 
 > npm install
 
-> npx playwright install
+> npx playwright@latest install
 
 # Run scripts:
 
