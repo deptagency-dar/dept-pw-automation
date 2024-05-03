@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test:chromium": "BROWSER_TYPE=chromium cucumber-js -t @prod --format html:test-results/chromium-report.html --format json:test-results/chromium-report.json",
-    "test:firefox": "BROWSER_TYPE=firefox cucumber-js -t @prod --format html:test-results/firefox-report.html --format json:test-results/firefox-report.json",
+    "test:chromium": "BROWSER_TYPE=chromium cucumber-js -t @prod",
+    "test:firefox": "BROWSER_TYPE=firefox cucumber-js -t @prod",
     "debug": "cucumber-js -t @debug",
     "posttest": "npx ts-node ./src/core/report.ts"
   },
@@ -15,12 +15,14 @@
   "devDependencies": {
     "@cucumber/cucumber": "^9.6.0",
     "@playwright/test": "^1.40.1",
+    "@types/allure-js-commons": "0.0.4",
     "@types/istanbul-lib-report": "^3.0.1",
     "@types/istanbul-reports": "^3.0.2",
     "@types/node": "^20.8.3",
+    "allure-commandline": "^2.29.0",
+    "allure-cucumberjs": "^2.15.1",
     "cypress": "^12.0.0",
-    "multiple-cucumber-html-reporter": "^3.5.0",
-    "ts-node": "^10.9.1"
+    "multiple-cucumber-html-reporter": "^3.5.0"
   },
   "dependencies": {
     "@axe-core/playwright": "^4.8.1",

@@ -1,7 +1,8 @@
 {
     "default": {
         "formatOptions": {
-            "snippetInterface": "async-await"
+            "snippetInterface": "async-await",
+            "outputDir": "./allure-reports"
         },
         "paths": [
             "./src/test/features/"
@@ -15,7 +16,8 @@
             "ts-node/register"
         ],
         "format": [
-            "progress"
+            "progress",
+            "./src/core/reporter.js"
         ]
     }
 }

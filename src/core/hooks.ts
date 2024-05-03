@@ -14,6 +14,8 @@ Before(async function(scenario) {
 
         // Determine which browser to use
         let browserType = process.env.BROWSER_TYPE; // Default to chromium if no env variable is set
+        await this.parameter('Browser', browserType); // Set browser type as a parameter
+        await this.parentSuite(browserType); // Set browser type as a parent suite (optional)
         let isHeadless = process.env.HEADLESS === 'true'; // Check the HEADLESS environment variable
 
         let launchOptions = {
@@ -43,8 +45,9 @@ Before(async function(scenario) {
 
 AfterStep(async function({pickle, result}) { 
     if(result.status == Status.FAILED){
-        const img = await pageFixture.page.screenshot({path: `./test-results/screenshots/${pickle.name}`, type:"png"});
-        await this.attach(img, "image/png");
+        const screenshotPath = `./allure-reports/screenshots/${pickle.name}.png`;
+        const img = await pageFixture.page.screenshot({ path: screenshotPath, type: 'png' });
+        await this.attach(img, 'image/png');
         console.log(`Step failed in scenario '${pickle.name}' with error: ${result.exception}`);
     }
 });
