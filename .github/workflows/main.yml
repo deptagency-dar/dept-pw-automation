@@ -22,7 +22,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Install Playwright Browsers
-        run: npx playwright install@latest --with-deps
+        run: npx playwright install @latest --with-deps
       - name: Run Cucumber tests
         env:
           HEADLESS: 'true'  

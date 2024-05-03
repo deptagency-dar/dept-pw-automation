@@ -27,20 +27,25 @@ Before(async function(scenario) {
         if(browserType){
             switch (browserType.toLowerCase()) {
                 case 'firefox':
-                    browser = await firefox.launch(launchOptions);
+                    const firefoxDesktop = devices['Desktop Firefox'];
+                    browser = await firefox.launch({
+                        ...launchOptions,
+                        ...firefoxDesktop,
+                    });
                     break;
                 case 'chrome':
                     const chromeDesktop = devices['Desktop Chrome'];
-                    console.log(`Launching Chrome with options:`, launchOptions, chromeDesktop); // Log launch options and device configuration
                     browser = await chromium.launch({
                         ...launchOptions,
-                        ...chromeDesktop
+                        ...chromeDesktop,
                     });
-                    console.log(browser);
                     break;
                 case 'edge':
+                    const edgeDesktop = devices['Desktop Edge'];
+                    console.log(edgeDesktop);
                     browser = await chromium.launch({
-                        channel: 'msedge',
+                        ...launchOptions,
+                        ...edgeDesktop,
                     });
                     break;
                 case 'mobilechrome':
@@ -58,14 +63,16 @@ Before(async function(scenario) {
                     });
                     break;
                 case 'webkit':
-                    browser = await webkit.launch(launchOptions);
+                    const safariDesktop = devices['Desktop Safari'];
+                    browser = await webkit.launch({
+                        ...launchOptions,
+                        ...safariDesktop,
+                    });
                     break;
                 default:
                     browser = await chromium.launch(launchOptions);
                     break;
             }
-        } else {
-            browser = await chromium.launch(launchOptions); // Si no se especifica el tipo de navegador, se lanza Chromium por defecto
         }
         
         const context = await browser.newContext();
