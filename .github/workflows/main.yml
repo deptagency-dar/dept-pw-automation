@@ -22,7 +22,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Install Playwright Browsers
-        run:   run: npx playwright install chromium firefox webkit --with-deps
+        run: npx playwright install chromium firefox webkit --with-deps
       - name: Run Cucumber tests
         env:
           HEADLESS: 'true'  
