@@ -21,7 +21,7 @@ Before(async function(scenario) {
 
         let launchOptions = {
             headless: isHeadless,
-            args: ['--start-maximized'] // Maximized window is only relevant in non-headless mode
+            //args: ['--start-maximized'] // Maximized window is only relevant in non-headless mode
         };
 
         if(browserType){
@@ -42,7 +42,6 @@ Before(async function(scenario) {
                     break;
                 case 'edge':
                     const edgeDesktop = devices['Desktop Edge'];
-                    console.log(edgeDesktop);
                     browser = await chromium.launch({
                         ...launchOptions,
                         ...edgeDesktop,
