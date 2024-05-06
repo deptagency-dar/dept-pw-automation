@@ -6,7 +6,12 @@
   "scripts": {
     "test:chromium": "BROWSER_TYPE=chromium cucumber-js -t @prod --format html:test-results/chromium-report.html --format json:test-results/chromium-report.json",
     "test:firefox": "BROWSER_TYPE=firefox cucumber-js -t @prod --format html:test-results/firefox-report.html --format json:test-results/firefox-report.json",
-    "debug": "BROWSER_TYPE=chromium cucumber-js -t @debug",
+    "test:chrome": "BROWSER_TYPE=chrome cucumber-js -t @prod --format html:test-results/chrome-report.html --format json:test-results/chrome-report.json",
+    "test:edge": "BROWSER_TYPE=edge cucumber-js -t @prod --format html:test-results/edge-report.html --format json:test-results/edge-report.json",
+    "test:mobilechrome": "BROWSER_TYPE=mobilechrome cucumber-js -t @prod --format html:test-results/mobilechrome-report.html --format json:test-results/mobilechrome-report.json",
+    "test:mobilesafari": "BROWSER_TYPE=mobilesafari cucumber-js -t @prod --format html:test-results/mobilesafari-report.html --format json:test-results/mobilesafari-report.json",
+    "test:webkit": "BROWSER_TYPE=webkit cucumber-js -t @prod --format html:test-results/webkit-report.html --format json:test-results/webkit-report.json",
+    "debug": "cucumber-js -t @debug",
     "posttest": "npx ts-node src/core/report.ts"
   },
   "keywords": [],
