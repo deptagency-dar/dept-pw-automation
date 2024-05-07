@@ -32,7 +32,9 @@ Before(async function(scenario) {
             }
         }
         
-        const context = await browser.newContext();
+        const context = await browser.newContext({
+            storageState:"./auth.json"
+        });
         const page = await context.newPage();
         pageFixture.page = page;
         //await pageFixture.page.coverage.startJSCoverage();
