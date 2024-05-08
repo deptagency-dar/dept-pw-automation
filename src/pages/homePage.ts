@@ -1,4 +1,4 @@
-import {expect, Page} from "@playwright/test";
+import {Page} from "@playwright/test";
 
 export default class HomePage{
 
@@ -20,8 +20,8 @@ export default class HomePage{
         this.checkTimeOffPolicyLink = () => this.page.getByText("Check the Paid Time Off Policy");
     }
 
-    public async goto(){
-        await this.page.goto("https://dept-central-client-mlbp.vercel.app/")
+    public async goto(url: string){
+        await this.page.goto(url);
     }
 
     //Actions
@@ -44,5 +44,17 @@ export default class HomePage{
 
     public async isVisibleRequestTimeOffButton(){
         return await this.requestTimeOffButton().isVisible();
+    }
+
+    // Validates the text elements presents on the Home Page
+    public async validateTextElements(element:string){
+        switch(element){
+            case 'title':
+                await this.isVisibleTimeOffTitle();
+                break;
+            case 'subtitle':
+                await this.isVisibleTimeOffSubtitle();
+                break;
+        }
     }
 }
