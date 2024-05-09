@@ -9,6 +9,6 @@ Given('I go to {string}', {timeout:20000}, async function (website: string) {
     homePage = new HomePage(pageFixture.page);
 });
 
-Then('I can see that the {string} is displayed', {}, async function (element) {
+Then('I can see that the {string} is displayed', {}, async function (element:string) {
     await homePage.validateTextElements(element);
 });
