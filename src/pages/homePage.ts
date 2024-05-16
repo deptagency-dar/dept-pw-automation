@@ -1,5 +1,4 @@
 import {expect, Page} from "@playwright/test";
-import {Page} from "@playwright/test";
 
 export default class HomePage{
 
