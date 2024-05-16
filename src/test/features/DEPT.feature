@@ -1,4 +1,4 @@
-@smoke @prod @staging
+@smoke @staging @prod
 Feature: DEPT
     Scenario: Navigate to DEPT home
         Given I navigate to 'https://dept-central-client-mlbp.vercel.app/'
