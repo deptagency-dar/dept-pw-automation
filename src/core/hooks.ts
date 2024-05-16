@@ -74,9 +74,7 @@ Before(async function(scenario) {
             }
         }
         
-        const context = await browser.newContext({
-            storageState:"./auth.json"
-        });
+        const context = await browser.newContext();
         const page = await context.newPage();
         pageFixture.page = page;
         //await pageFixture.page.coverage.startJSCoverage();
