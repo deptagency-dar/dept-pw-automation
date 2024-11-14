@@ -1,6 +1,6 @@
 import { Given, Then, When } from '@cucumber/cucumber';
-import { pageFixture } from "../../core/pageFixture";
-import HomePage from '../../pages/homePage';
+import { pageFixture } from "../../../core/pageFixture";
+import HomePage from '../../../pages/DeptCentral/homePage';
 
 let homePage:HomePage;
 

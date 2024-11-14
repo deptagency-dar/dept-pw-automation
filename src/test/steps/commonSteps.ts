@@ -4,10 +4,14 @@ import { pageFixture } from "../../core/pageFixture";
 import rawConfig from '../../core/config.json';
 import { AppConfig } from '../../core/config.types';
 import { deptLocators } from '../locators/deptLocators';
+import LoginPage from '../../pages/Common/loginPage';
 
 const environment = process.env.ENV || 'production'; // Default to production if ENV is not set
 const defaultParams = rawConfig.defaultAgreementParameter;
 const config: AppConfig = rawConfig as AppConfig;
+let loginPage:LoginPage;
+const username = process.env.username || 'test';
+const password = process.env.password || 'test';
 
 Given('I navigate to {string}', {timeout:20000}, async function (website: string) {
     await pageFixture.page.goto(website);
@@ -110,4 +114,11 @@ When('I check the element {string}',{}, async function(element: string) {
         throw 'Checkbox not found';
     }
 })
+
+Then('Sign in with test user', {}, async function () {
+    loginPage = new LoginPage(pageFixture.page)
+    await loginPage.typeUsername(username);
+    await loginPage.typePassword(password);
+    await loginPage.clickSubmit();
+});
 
