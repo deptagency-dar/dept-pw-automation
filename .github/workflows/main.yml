@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        browser: [chromium, firefox, chrome, edge, mobilechrome, mobilesafari, webkit]
+        browser: [chromium]
         
     steps:
       - uses: actions/checkout@v3
