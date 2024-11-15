@@ -1,0 +1,35 @@
+name: Playwright and Cucumber Tests for Dept Central
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        browser: [chromium]
+        
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        run: npm ci
+      - name: Install Playwright Browsers
+        run: npx playwright install chromium firefox webkit --with-deps
+      - name: Run Cucumber tests
+        env:
+          HEADLESS: 'true'  
+        run: npm run test:${{ matrix.browser }}
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: cucumber-reports
+          path: test-results/
+          retention-days: 30
