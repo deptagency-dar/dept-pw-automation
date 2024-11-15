@@ -121,4 +121,3 @@ Then('Sign in with test user', {}, async function () {
     await loginPage.typePassword(password);
     await loginPage.clickSubmit();
 });
-
