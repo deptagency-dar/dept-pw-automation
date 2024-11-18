@@ -10,8 +10,8 @@ const environment = process.env.ENV || 'production'; // Default to production if
 const defaultParams = rawConfig.defaultAgreementParameter;
 const config: AppConfig = rawConfig as AppConfig;
 let loginPage:LoginPage;
-const username = process.env.username || 'test';
-const password = process.env.password || 'test';
+const username = process.env.USERNAME || 'test';
+const password = process.env.PASSWORD || 'test';
 
 Given('I navigate to {string}', {timeout:20000}, async function (website: string) {
     await pageFixture.page.goto(website);
@@ -116,8 +116,9 @@ When('I check the element {string}',{}, async function(element: string) {
 })
 
 Then('Sign in with test user', {}, async function () {
-    loginPage = new LoginPage(pageFixture.page)
+    loginPage = new LoginPage(pageFixture.page);
     await loginPage.typeUsername(username);
     await loginPage.typePassword(password);
     await loginPage.clickSubmit();
 });
+

@@ -1,9 +1,5 @@
 name: Playwright and Cucumber Tests for SkillsFinder
 
-env:
-  username: ${{secrets.username}}
-  password: ${{secrets.password}}
-
 on:
   push:
     branches: [ main, master ]
@@ -12,6 +8,7 @@ on:
 
 jobs:
   test:
+    environment: main
     timeout-minutes: 60
     runs-on: ubuntu-latest
     strategy:
@@ -30,7 +27,9 @@ jobs:
       - name: Run Cucumber tests
         env:
           HEADLESS: 'true'  
-        run: npm run test:skillsfinder
+          USERNAME: ${{secrets.USERNAME}}
+          PASSWORD: ${{secrets.PASSWORD}}
+        run: USERNAME="$USERNAME" PASSWORD="$PASSWORD" npm run test:skillsfinder
       - uses: actions/upload-artifact@v3
         if: always()
         with:
