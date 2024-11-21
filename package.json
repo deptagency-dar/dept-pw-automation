@@ -11,6 +11,7 @@
     "test:mobilechrome": "BROWSER_TYPE=mobilechrome cucumber-js -t @prod --format html:test-results/mobilechrome-report.html --format json:test-results/mobilechrome-report.json",
     "test:mobilesafari": "BROWSER_TYPE=mobilesafari cucumber-js -t @prod --format html:test-results/mobilesafari-report.html --format json:test-results/mobilesafari-report.json",
     "test:webkit": "BROWSER_TYPE=webkit cucumber-js -t @prod --format html:test-results/webkit-report.html --format json:test-results/webkit-report.json",
+    "test:skillsfinder": "BROWSER_TYPE=chrome cucumber-js -t @skillsfinder --format html:test-results/chrome-report.html --format json:test-results/chrome-report.json",
     "debug": "cucumber-js -t @debug",
     "posttest": "npx ts-node src/core/report.ts"
   },
@@ -19,7 +20,7 @@
   "license": "ISC",
   "devDependencies": {
     "@cucumber/cucumber": "^9.6.0",
-    "@playwright/test": "^1.40.1",
+    "@playwright/test": "^1.48.2",
     "@types/istanbul-lib-report": "^3.0.1",
     "@types/istanbul-reports": "^3.0.2",
     "@types/node": "^20.8.3",

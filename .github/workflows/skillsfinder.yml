@@ -1,4 +1,4 @@
-name: Playwright and Cucumber Tests
+name: Playwright and Cucumber Tests for SkillsFinder
 
 on:
   push:
@@ -8,11 +8,12 @@ on:
 
 jobs:
   test:
+    environment: main
     timeout-minutes: 60
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        browser: [chromium]
+        browser: [chrome]
         
     steps:
       - uses: actions/checkout@v3
@@ -26,7 +27,9 @@ jobs:
       - name: Run Cucumber tests
         env:
           HEADLESS: 'true'  
-        run: npm run test:${{ matrix.browser }}
+          USERNAME: ${{secrets.USERNAME}}
+          PASSWORD: ${{secrets.PASSWORD}}
+        run: USERNAME="$USERNAME" PASSWORD="$PASSWORD" npm run test:skillsfinder
       - uses: actions/upload-artifact@v3
         if: always()
         with:
