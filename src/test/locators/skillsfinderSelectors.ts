@@ -35,9 +35,8 @@ export default {
     //Copy URL Selectors
     copyURLButton: '[data-testid="copyURLButton"]',
     //Profile Selectors
-    editMySkillsButton: '.Search_editButton__xLjGy',
     profilePicture: '[alt="User Portrait"]',
-    editProfileButton: '.User_profile__update-button__BEde8',
+    editProfileButton: '//*[@id="__next"]/main/section/div[1]/button[2]',
     profileViewHeader: '[data-testid="UserProfileHeader"]',
     profileViewSearch: '[data-testid="profileSkillSearch"] input',
     skillsContainer: '[data-testid*="TagInput_skillContainer"]'
