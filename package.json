@@ -20,7 +20,7 @@
   "license": "ISC",
   "devDependencies": {
     "@cucumber/cucumber": "^9.6.0",
-    "@playwright/test": "^1.48.2",
+    "@playwright/test": "^1.49.0",
     "@types/istanbul-lib-report": "^3.0.1",
     "@types/istanbul-reports": "^3.0.2",
     "@types/node": "^20.8.3",
@@ -36,7 +36,6 @@
     "axios": "^1.5.1",
     "cheerio": "^1.0.0-rc.12",
     "istanbul-reports": "^3.1.6",
-    "playwright": "^1.43.1",
     "puppeteer": "^21.3.8",
     "v8-to-istanbul": "^9.1.3"
   }
