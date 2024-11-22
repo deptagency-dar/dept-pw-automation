@@ -5,7 +5,6 @@ import skillsfinderSelectors from '../../locators/skillsfinderSelectors';
 
 Given('I should see {int} cards on the page', {}, async function (numberOfCards: number) {
     await expect(pageFixture.page.locator(skillsfinderSelectors.cardProfileName)).toHaveCount(numberOfCards);
-
 })
 
 Given('I should be on page {int}', {}, async function (pageNumber: number) {

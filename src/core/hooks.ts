@@ -75,6 +75,7 @@ Before(async function(scenario) {
         }
         
         const context = await browser.newContext();
+        await context.grantPermissions(["clipboard-read", "clipboard-write"]);
         pageFixture.page = await context.newPage();
 
         //await pageFixture.page.coverage.startJSCoverage();
@@ -116,7 +117,6 @@ After(async function () {
         throw error; // Rethrow the error to fail the test if closing fails
     }
 });
-
 
 AfterAll(async () => {
     try {

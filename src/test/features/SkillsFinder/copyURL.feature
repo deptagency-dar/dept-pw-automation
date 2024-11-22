@@ -1,7 +1,9 @@
+@skillsfinder
 Feature: Verify Copy URL button functionality
 
   Background:
-    Given the browser has clipboard read and write permissions
+    Given I navigate to 'https://skills-test.deptagency.com/'
+    Then Sign in with test user
 
   Scenario: Generate correct search link
     Given I search by primary skill "Java"
